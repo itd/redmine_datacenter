@@ -10,7 +10,7 @@ class ApplisController < DatacenterPluginController
     @status = params[:status] ? params[:status].to_i : Server::STATUS_ACTIVE
     c = ARCondition.new(["datacenter_id = ?", @datacenter.id])
     c << ["status = ?", @status] unless @status == 0
-    
+
     unless params[:name].blank?
       name = "%#{params[:name].strip.downcase}%"
       c << ["LOWER(name) LIKE ?", name]
@@ -25,11 +25,11 @@ class ApplisController < DatacenterPluginController
 
     render :layout => !request.xhr?
   end
-  
+
   def show
     table = IssueElement.table_name
     c = ARCondition.new(["#{table}.appli_id = ?", @appli.id])
-    
+
     case params[:filter].to_s
     when "Appli"
       c << ["#{table}.element_type = ?", "Appli"]
@@ -46,15 +46,14 @@ class ApplisController < DatacenterPluginController
                         :conditions => c.conditions,
                         :limit => @issue_pages.items_per_page,
                         :offset => @issue_pages.current.offset,
-                        :group => 'id',
                         :order => sort_clause
     render :layout => !request.xhr?
   end
-  
+
   def new
     @appli = Appli.new
   end
-  
+
   def create
     @appli = Appli.new(params[:appli])
     if @appli.save
@@ -64,10 +63,10 @@ class ApplisController < DatacenterPluginController
       render :action => 'new'
     end
   end
-  
+
   def edit
   end
-  
+
   def update
     if @appli.update_attributes(params[:appli])
       flash[:notice] = l(:notice_successful_update)
@@ -76,7 +75,7 @@ class ApplisController < DatacenterPluginController
       render :action => 'edit'
     end
   end
-  
+
   def destroy
     @appli.status = Appli::STATUS_LOCKED
     @appli.save
