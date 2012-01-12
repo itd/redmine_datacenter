@@ -1,6 +1,7 @@
 class CreateApplisIssues < ActiveRecord::Migration
   def self.up
-    create_table :applis_issues, :id => false do |t|
+#    create_table :applis_issues, :id => false do |t|
+    create_table :applis_issues do |t|
       t.column :appli_id, :integer, :null => false
       t.column :issue_id, :integer, :null => false
     end
