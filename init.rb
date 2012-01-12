@@ -25,7 +25,7 @@ Redmine::Plugin.register :datacenter_plugin do
   author_url 'mailto:jeanbaptiste.barth@gmail.com'
   version '0.2.1'
   requires_redmine :version_or_higher => '0.9.0'
-  
+
   menu :project_menu,
        :datacenter, { :controller => 'datacenters', :action => 'show' },
        :caption => :label_datacenter,
@@ -48,7 +48,7 @@ Redmine::Plugin.register :datacenter_plugin do
     #set to public here, but there's a require_admin in the controller
     permission :admin_datacenter, {:datacenters => :index}, :public => true
   end
-  
+
   settings :default => {
               'hide_admin_links' => false
             },
@@ -65,3 +65,10 @@ end
 ActiveSupport::Inflector.inflections do |inflection|
   inflection.irregular "apache", "apaches"
 end
+
+# This plugin should be reloaded in development mode.
+if RAILS_ENV == 'development'
+  ActiveSupport::Dependencies.load_once_paths.reject!{|x| x =~ /^#{Regexp.escape(File.dirname(__FILE__))}/}
+end
+
+
